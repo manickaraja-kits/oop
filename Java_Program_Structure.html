@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Program Structure Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255, 255, 255, 0.1) 10px,
+                rgba(255, 255, 255, 0.1) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+        
+        @keyframes slide {
+            0% { transform: translateX(-50px); }
+            100% { transform: translateX(50px); }
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+        
+        .code-section {
+            background: #1e1e1e;
+            border-radius: 15px;
+            padding: 25px;
+            color: #d4d4d4;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .code-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(90deg, #ff5f56, #ffbd2e, #27ca3f);
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .code-section::after {
+            content: '● ● ●';
+            position: absolute;
+            top: 8px;
+            left: 15px;
+            color: #333;
+            font-size: 12px;
+        }
+        
+        .code-content {
+            margin-top: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .structure-panel {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .structure-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid #007bff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .structure-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .structure-item.active {
+            border-left-color: #28a745;
+            background: #e8f5e8;
+        }
+        
+        .structure-item h3 {
+            color: #007bff;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .structure-item.active h3 {
+            color: #28a745;
+        }
+        
+        .structure-item p {
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 4px;
+            border-radius: 3px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { background: #ffeb3b; }
+            to { background: #ffc107; }
+        }
+        
+        .syntax-highlight {
+            color: #569cd6;
+        }
+        
+        .keyword {
+            color: #c586c0;
+        }
+        
+        .string {
+            color: #ce9178;
+        }
+        
+        .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+        
+        .method {
+            color: #dcdcaa;
+        }
+        
+        .controls {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            margin: 0 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 123, 255, 0.3);
+        }
+        
+        .explanation {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .explanation.show {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .code-content {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Java Program Structure</h1>
+            <p>Interactive Demo - Click on structure elements to explore</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="code-section">
+                <div class="code-content">
+<pre id="javaCode"><span class="comment">// Package declaration (optional)</span>
+<span class="keyword">package</span> <span class="syntax-highlight">com.example.demo</span>;
+
+<span class="comment">// Import statements (optional)</span>
+<span class="keyword">import</span> <span class="syntax-highlight">java.util.Scanner</span>;
+<span class="keyword">import</span> <span class="syntax-highlight">java.util.Date</span>;
+
+<span class="comment">/**
+ * Documentation comment
+ * Author: Demo User
+ */</span>
+<span class="keyword">public class</span> <span class="syntax-highlight">HelloWorld</span> {
+    
+    <span class="comment">// Class variables (fields)</span>
+    <span class="keyword">private static</span> <span class="syntax-highlight">String</span> greeting = <span class="string">"Hello"</span>;
+    <span class="keyword">private</span> <span class="syntax-highlight">int</span> count = <span class="string">0</span>;
+    
+    <span class="comment">// Main method - entry point</span>
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="syntax-highlight">String</span>[] args) {
+        <span class="syntax-highlight">System</span>.out.println(<span class="string">"Welcome to Java!"</span>);
+        
+        <span class="comment">// Create instance</span>
+        <span class="syntax-highlight">HelloWorld</span> hw = <span class="keyword">new</span> <span class="syntax-highlight">HelloWorld</span>();
+        hw.displayMessage();
+    }
+    
+    <span class="comment">// Instance method</span>
+    <span class="keyword">public void</span> <span class="method">displayMessage</span>() {
+        <span class="syntax-highlight">System</span>.out.println(greeting + <span class="string">" World!"</span>);
+        count++;
+    }
+}</pre>
+                </div>
+            </div>
+            
+            <div class="structure-panel">
+                <h2 style="color: #007bff; margin-bottom: 20px;">Program Structure Components</h2>
+                
+                <div class="structure-item" data-element="package">
+                    <h3>📦 Package Declaration</h3>
+                    <p>Organizes related classes and interfaces into namespaces</p>
+                </div>
+                
+                <div class="structure-item" data-element="import">
+                    <h3>📥 Import Statements</h3>
+                    <p>Brings external classes and packages into the current file</p>
+                </div>
+                
+                <div class="structure-item" data-element="class">
+                    <h3>🏛️ Class Declaration</h3>
+                    <p>Defines the blueprint for objects with access modifiers</p>
+                </div>
+                
+                <div class="structure-item" data-element="fields">
+                    <h3>📊 Fields/Variables</h3>
+                    <p>Store data and state within the class</p>
+                </div>
+                
+                <div class="structure-item" data-element="main">
+                    <h3>🚀 Main Method</h3>
+                    <p>Entry point of the program where execution begins</p>
+                </div>
+                
+                <div class="structure-item" data-element="methods">
+                    <h3>⚙️ Methods</h3>
+                    <p>Define behavior and operations that can be performed</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" onclick="highlightAll()">Show All Components</button>
+            <button class="btn" onclick="resetHighlight()">Reset View</button>
+            <button class="btn" onclick="showCompilation()">Show Compilation</button>
+        </div>
+        
+        <div class="explanation" id="explanationPanel">
+            <h3 id="explanationTitle">Component Details</h3>
+            <p id="explanationContent">Click on any structure component to see detailed information.</p>
+        </div>
+    </div>
+    
+    <script>
+        const explanations = {
+            package: {
+                title: "📦 Package Declaration",
+                content: "The package declaration must be the first non-comment line in a Java file. It groups related classes and interfaces together, creating a namespace to avoid naming conflicts. Format: 'package com.company.project;'"
+            },
+            import: {
+                title: "📥 Import Statements",
+                content: "Import statements allow you to use classes from other packages without fully qualifying their names. They come after the package declaration and before the class declaration. You can import specific classes or use wildcards (*)."
+            },
+            class: {
+                title: "🏛️ Class Declaration",
+                content: "The class declaration defines a new data type. It includes access modifiers (public, private, protected), the 'class' keyword, and the class name. The class name must match the filename exactly."
+            },
+            fields: {
+                title: "📊 Fields/Variables",
+                content: "Fields store the state of an object. They can be instance variables (unique to each object) or class variables (static, shared among all instances). Access modifiers control their visibility."
+            },
+            main: {
+                title: "🚀 Main Method",
+                content: "The main method is the entry point of a Java application. It must be 'public static void main(String[] args)'. The JVM looks for this exact signature to start program execution."
+            },
+            methods: {
+                title: "⚙️ Methods",
+                content: "Methods define the behavior of a class. They can accept parameters, perform operations, and return values. Methods can be static (belong to the class) or instance methods (belong to objects)."
+            }
+        };
+        
+        // Add click event listeners to structure items
+        document.querySelectorAll('.structure-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all items
+                document.querySelectorAll('.structure-item').forEach(i => i.classList.remove('active'));
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+                
+                // Show explanation
+                const element = this.dataset.element;
+                showExplanation(element);
+                
+                // Highlight corresponding code
+                highlightCode(element);
+            });
+        });
+        
+        function showExplanation(element) {
+            const panel = document.getElementById('explanationPanel');
+            const title = document.getElementById('explanationTitle');
+            const content = document.getElementById('explanationContent');
+            
+            title.textContent = explanations[element].title;
+            content.textContent = explanations[element].content;
+            
+            panel.classList.add('show');
+        }
+        
+        function highlightCode(element) {
+            // Remove existing highlights
+            resetCodeHighlights();
+            
+            // Add highlights based on element type
+            const codeContent = document.getElementById('javaCode');
+            let codeHTML = codeContent.innerHTML;
+            
+            switch(element) {
+                case 'package':
+                    codeHTML = codeHTML.replace(
+                        /(<span class="keyword">package<\/span> <span class="syntax-highlight">com\.example\.demo<\/span>;)/,
+                        '<span class="highlight">$1</span>'
+                    );
+                    break;
+                case 'import':
+                    codeHTML = codeHTML.replace(
+                        /(<span class="keyword">import<\/span> <span class="syntax-highlight">java\.util\.Scanner<\/span>;)/,
+                        '<span class="highlight">$1</span>'
+                    );
+                    codeHTML = codeHTML.replace(
+                        /(<span class="keyword">import<\/span> <span class="syntax-highlight">java\.util\.Date<\/span>;)/,
+                        '<span class="highlight">$1</span>'
+                    );
+                    break;
+                case 'class':
+                    codeHTML = codeHTML.replace(
+                        /(<span class="keyword">public class<\/span> <span class="syntax-highlight">HelloWorld<\/span> \{)/,
+                        '<span class="highlight">$1</span>'
+                    );
+                    break;
+                case 'fields':
+                    codeHTML = codeHTML.replace(
+                        /(<span class="keyword">private static<\/span> <span class="syntax-highlight">String<\/span> greeting = <span class="string">"Hello"<\/span>;)/,
+                        '<span class="highlight">$1</span>'
+                    );
+                    codeHTML = codeHTML.replace(
+                        /(<span class="keyword">private<\/span> <span class="syntax-highlight">int<\/span> count = <span class="string">0<\/span>;)/,
+                        '<span class="highlight">$1</span>'
+                    );
+                    break;
+                case 'main':
+                    codeHTML = codeHTML.replace(
+                        /(<span class="keyword">public static void<\/span> <span class="method">main<\/span>\(<span class="syntax-highlight">String<\/span>\[\] args\) \{[\s\S]*?hw\.displayMessage\(\);\s*\})/,
+                        '<span class="highlight">$1</span>'
+                    );
+                    break;
+                case 'methods':
+                    codeHTML = codeHTML.replace(
+                        /(<span class="keyword">public void<\/span> <span class="method">displayMessage<\/span>\(\) \{[\s\S]*?count\+\+;\s*\})/,
+                        '<span class="highlight">$1</span>'
+                    );
+                    break;
+            }
+            
+            codeContent.innerHTML = codeHTML;
+        }
+        
+        function resetCodeHighlights() {
+            const codeContent = document.getElementById('javaCode');
+            codeContent.innerHTML = codeContent.innerHTML.replace(/<span class="highlight">(.*?)<\/span>/g, '$1');
+        }
+        
+        function highlightAll() {
+            const items = document.querySelectorAll('.structure-item');
+            items.forEach((item, index) => {
+                setTimeout(() => {
+                    item.classList.add('active');
+                    highlightCode(item.dataset.element);
+                }, index * 500);
+            });
+        }
+        
+        function resetHighlight() {
+            document.querySelectorAll('.structure-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.getElementById('explanationPanel').classList.remove('show');
+            
+            // Reset code highlighting
+            resetCodeHighlights();
+        }
+        
+        function showCompilation() {
+            // Create a modal-like overlay for compilation results
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                animation: fadeIn 0.3s ease-in;
+            `;
+            
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: #1e1e1e;
+                color: #d4d4d4;
+                padding: 30px;
+                border-radius: 15px;
+                max-width: 600px;
+                width: 90%;
+                font-family: 'Courier New', monospace;
+                position: relative;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            `;
+            
+            content.innerHTML = `
+                <div style="background: linear-gradient(90deg, #ff5f56, #ffbd2e, #27ca3f); height: 30px; margin: -30px -30px 20px -30px; border-radius: 15px 15px 0 0; position: relative;">
+                    <div style="position: absolute; top: 8px; left: 15px; color: #333; font-size: 12px;">● ● ●</div>
+                    <div style="position: absolute; top: 8px; right: 15px; color: #333; font-size: 12px;">Terminal</div>
+                </div>
+                
+                <h3 style="color: #4CAF50; margin-bottom: 20px;">📋 Java Compilation & Execution Process</h3>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong style="color: #2196F3;">Step 1: Save the file</strong><br>
+                    <span style="color: #FF9800;">$</span> <span style="color: #4CAF50;">nano HelloWorld.java</span><br>
+                    <span style="color: #999;">// Save your Java source code</span>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong style="color: #2196F3;">Step 2: Compile the Java file</strong><br>
+                    <span style="color: #FF9800;">$</span> <span style="color: #4CAF50;">javac HelloWorld.java</span><br>
+                    <span style="color: #999;">// Creates HelloWorld.class (bytecode)</span>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong style="color: #2196F3;">Step 3: Run the program</strong><br>
+                    <span style="color: #FF9800;">$</span> <span style="color: #4CAF50;">java HelloWorld</span>
+                </div>
+                
+                <div style="border-top: 1px solid #444; padding-top: 15px; margin-top: 20px;">
+                    <strong style="color: #4CAF50;">📤 Output:</strong><br>
+                    <div style="background: #2d2d2d; padding: 15px; border-radius: 8px; margin-top: 10px; border-left: 4px solid #4CAF50;">
+                        Welcome to Java!<br>
+                        Hello World!
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <strong style="color: #2196F3;">💡 What happens during compilation:</strong><br>
+                    <span style="color: #999;">• Java source code (.java) → Java bytecode (.class)</span><br>
+                    <span style="color: #999;">• Bytecode runs on Java Virtual Machine (JVM)</span><br>
+                    <span style="color: #999;">• "Write once, run anywhere" principle</span>
+                </div>
+                
+                <button onclick="this.parentElement.parentElement.remove()" style="
+                    position: absolute;
+                    top: 10px;
+                    right: 15px;
+                    background: #ff5f56;
+                    color: white;
+                    border: none;
+                    border-radius: 50%;
+                    width: 25px;
+                    height: 25px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                ">×</button>
+                
+                <div style="text-align: center; margin-top: 25px;">
+                    <button onclick="this.parentElement.parentElement.parentElement.remove()" style="
+                        background: linear-gradient(135deg, #4CAF50, #45a049);
+                        color: white;
+                        border: none;
+                        padding: 12px 24px;
+                        border-radius: 25px;
+                        cursor: pointer;
+                        font-size: 16px;
+                        transition: all 0.3s ease;
+                    ">Got it!</button>
+                </div>
+            `;
+            
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+        
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const structureItems = document.querySelectorAll('.structure-item');
+            
+            structureItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-50px)';
+                
+                setTimeout(() => {
+                    item.style.transition = 'all 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
