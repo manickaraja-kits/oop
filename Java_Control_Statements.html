@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Control Statements Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav {
+            background: #2c3e50;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 15px 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom-color: #3498db;
+        }
+
+        .nav-btn.active {
+            background: #3498db;
+            border-bottom-color: #2980b9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #3498db;
+        }
+
+        .demo-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            position: relative;
+            white-space: pre;
+            line-height: 1.4;
+        }
+
+        .code-block::before {
+            content: "Java";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.7em;
+        }
+
+        .interactive-demo {
+            background: #ecf0f1;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .output {
+            background: #34495e;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            min-height: 50px;
+            white-space: pre-wrap;
+        }
+
+        .highlight {
+            background: #f39c12;
+            padding: 2px 4px;
+            border-radius: 3px;
+            color: white;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .loop-visualization {
+            background: #3498db;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .loop-visualization.active {
+            background: #e74c3c;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Java Control Statements</h1>
+            <p>Interactive Demo & Learning Tool</p>
+        </div>
+
+        <div class="nav">
+            <button class="nav-btn active" onclick="showSection('conditional')">Conditional Statements</button>
+            <button class="nav-btn" onclick="showSection('loops')">Loops</button>
+            <button class="nav-btn" onclick="showSection('jump')">Jump Statements</button>
+            <button class="nav-btn" onclick="showSection('switch')">Switch Statement</button>
+        </div>
+
+        <div class="content">
+            <!-- Conditional Statements Section -->
+            <div id="conditional" class="section active">
+                <div class="demo-card">
+                    <h3>If-Else Statement</h3>
+                    <p>The if-else statement executes different blocks of code based on conditions.</p>
+                    <div class="code-block">public class IfElseExample {
+    public static void main(String[] args) {
+        int age = 18;
+        
+        if (age >= 18) {
+            System.out.println("You are eligible to vote!");
+        } else if (age >= 16) {
+            System.out.println("You can get a driver's license!");
+        } else {
+            System.out.println("You are too young for both!");
+        }
+    }
+}</div>
+                    <div class="interactive-demo">
+                        <div class="input-group">
+                            <label>Enter your age:</label>
+                            <input type="number" id="ageInput" value="18" min="0" max="120">
+                        </div>
+                        <button class="btn" onclick="checkAge()">Check Eligibility</button>
+                        <div id="ageOutput" class="output">Click "Check Eligibility" to see the result</div>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <h3>Nested If Statement</h3>
+                    <p>You can nest if statements inside other if statements for complex conditions.</p>
+                    <div class="code-block">public class NestedIfExample {
+    public static void main(String[] args) {
+        int score = 85;
+        char grade;
+        
+        if (score >= 90) {
+            grade = 'A';
+        } else if (score >= 80) {
+            if (score >= 85) {
+                grade = 'B';
+                System.out.println("Good job!");
+            } else {
+                grade = 'B';
+            }
+        } else if (score >= 70) {
+            grade = 'C';
+        } else {
+            grade = 'F';
+        }
+        
+        System.out.println("Grade: " + grade);
+    }
+}</div>
+                    <div class="interactive-demo">
+                        <div class="input-group">
+                            <label>Enter your score (0-100):</label>
+                            <input type="number" id="scoreInput" value="85" min="0" max="100">
+                        </div>
+                        <button class="btn" onclick="calculateGrade()">Calculate Grade</button>
+                        <div id="gradeOutput" class="output">Click "Calculate Grade" to see the result</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loops Section -->
+            <div id="loops" class="section">
+                <div class="demo-card">
+                    <h3>For Loop</h3>
+                    <p>The for loop is used when you know the number of iterations in advance.</p>
+                    <div class="code-block">public class ForLoopExample {
+    public static void main(String[] args) {
+        System.out.println("Counting from 1 to 5:");
+        
+        for (int i = 1; i <= 5; i++) {
+            System.out.println("Count: " + i);
+        }
+        
+        System.out.println("Loop finished!");
+    }
+}</div>
+                    <div class="interactive-demo">
+                        <div class="input-group">
+                            <label>Enter the number to count to:</label>
+                            <input type="number" id="countInput" value="5" min="1" max="20">
+                        </div>
+                        <button class="btn" onclick="runForLoop()">Run For Loop</button>
+                        <div id="forLoopOutput" class="output">Click "Run For Loop" to see the result</div>
+                        <div id="forLoopVisualization"></div>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <h3>While Loop</h3>
+                    <p>The while loop continues as long as the condition is true.</p>
+                    <div class="code-block">public class WhileLoopExample {
+    public static void main(String[] args) {
+        int i = 1;
+        int sum = 0;
+        
+        while (i <= 10) {
+            sum += i;
+            System.out.println("Adding " + i + ", sum = " + sum);
+            i++;
+        }
+        
+        System.out.println("Final sum: " + sum);
+    }
+}</div>
+                    <div class="interactive-demo">
+                        <div class="input-group">
+                            <label>Calculate sum from 1 to:</label>
+                            <input type="number" id="sumInput" value="10" min="1" max="100">
+                        </div>
+                        <button class="btn" onclick="runWhileLoop()">Run While Loop</button>
+                        <div id="whileLoopOutput" class="output">Click "Run While Loop" to see the result</div>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <h3>Do-While Loop</h3>
+                    <p>The do-while loop executes at least once, then checks the condition.</p>
+                    <div class="code-block">public class DoWhileExample {
+    public static void main(String[] args) {
+        int number = 5;
+        
+        do {
+            System.out.println("Number: " + number);
+            number--;
+        } while (number > 0);
+        
+        System.out.println("Countdown finished!");
+    }
+}</div>
+                    <div class="interactive-demo">
+                        <div class="input-group">
+                            <label>Start countdown from:</label>
+                            <input type="number" id="countdownInput" value="5" min="1" max="10">
+                        </div>
+                        <button class="btn" onclick="runDoWhileLoop()">Run Do-While Loop</button>
+                        <div id="doWhileOutput" class="output">Click "Run Do-While Loop" to see the result</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jump Statements Section -->
+            <div id="jump" class="section">
+                <div class="demo-card">
+                    <h3>Break Statement</h3>
+                    <p>The break statement is used to exit a loop or switch statement.</p>
+                    <div class="code-block">public class BreakExample {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 10; i++) {
+            if (i == 5) {
+                System.out.println("Breaking at i = " + i);
+                break;
+            }
+            System.out.println("i = " + i);
+        }
+        System.out.println("Loop ended");
+    }
+}</div>
+                    <div class="interactive-demo">
+                        <div class="input-group">
+                            <label>Break when i equals:</label>
+                            <input type="number" id="breakInput" value="5" min="1" max="10">
+                        </div>
+                        <button class="btn" onclick="runBreakExample()">Run Break Example</button>
+                        <div id="breakOutput" class="output">Click "Run Break Example" to see the result</div>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <h3>Continue Statement</h3>
+                    <p>The continue statement skips the current iteration and moves to the next one.</p>
+                    <div class="code-block">public class ContinueExample {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 10; i++) {
+            if (i % 2 == 0) {
+                continue; // Skip even numbers
+            }
+            System.out.println("Odd number: " + i);
+        }
+    }
+}</div>
+                    <div class="interactive-demo">
+                        <div class="input-group">
+                            <label>Skip multiples of:</label>
+                            <input type="number" id="continueInput" value="2" min="2" max="5">
+                        </div>
+                        <button class="btn" onclick="runContinueExample()">Run Continue Example</button>
+                        <div id="continueOutput" class="output">Click "Run Continue Example" to see the result</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Switch Statement Section -->
+            <div id="switch" class="section">
+                <div class="demo-card">
+                    <h3>Switch Statement</h3>
+                    <p>The switch statement selects one of many code blocks to execute.</p>
+                    <div class="code-block">public class SwitchExample {
+    public static void main(String[] args) {
+        int dayOfWeek = 3;
+        String dayName;
+        
+        switch (dayOfWeek) {
+            case 1:
+                dayName = "Monday";
+                break;
+            case 2:
+                dayName = "Tuesday";
+                break;
+            case 3:
+                dayName = "Wednesday";
+                break;
+            case 4:
+                dayName = "Thursday";
+                break;
+            case 5:
+                dayName = "Friday";
+                break;
+            case 6:
+                dayName = "Saturday";
+                break;
+            case 7:
+                dayName = "Sunday";
+                break;
+            default:
+                dayName = "Invalid day";
+        }
+        
+        System.out.println("Day: " + dayName);
+    }
+}</div>
+                    <div class="interactive-demo">
+                        <div class="input-group">
+                            <label>Select day of week:</label>
+                            <select id="daySelect">
+                                <option value="1">1 - Monday</option>
+                                <option value="2">2 - Tuesday</option>
+                                <option value="3" selected>3 - Wednesday</option>
+                                <option value="4">4 - Thursday</option>
+                                <option value="5">5 - Friday</option>
+                                <option value="6">6 - Saturday</option>
+                                <option value="7">7 - Sunday</option>
+                                <option value="8">8 - Invalid</option>
+                            </select>
+                        </div>
+                        <button class="btn" onclick="runSwitchExample()">Run Switch Example</button>
+                        <div id="switchOutput" class="output">Click "Run Switch Example" to see the result</div>
+                    </div>
+                </div>
+
+                <div class="demo-card">
+                    <h3>Enhanced Switch (Java 12+)</h3>
+                    <p>Modern Java supports enhanced switch expressions with arrow syntax.</p>
+                    <div class="code-block">public class EnhancedSwitchExample {
+    public static void main(String[] args) {
+        int month = 3;
+        
+        String season = switch (month) {
+            case 12, 1, 2 -> "Winter";
+            case 3, 4, 5 -> "Spring";
+            case 6, 7, 8 -> "Summer";
+            case 9, 10, 11 -> "Fall";
+            default -> "Invalid month";
+        };
+        
+        System.out.println("Season: " + season);
+    }
+}</div>
+                    <div class="interactive-demo">
+                        <div class="input-group">
+                            <label>Select month:</label>
+                            <select id="monthSelect">
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3" selected>March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+                        <button class="btn" onclick="runEnhancedSwitch()">Run Enhanced Switch</button>
+                        <div id="enhancedSwitchOutput" class="output">Click "Run Enhanced Switch" to see the result</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Remove active class from all nav buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function checkAge() {
+            const age = parseInt(document.getElementById('ageInput').value);
+            let result = '';
+            
+            if (age >= 18) {
+                result = 'You are eligible to vote!';
+            } else if (age >= 16) {
+                result = 'You can get a driver\'s license!';
+            } else {
+                result = 'You are too young for both!';
+            }
+            
+            document.getElementById('ageOutput').textContent = result;
+        }
+
+        function calculateGrade() {
+            const score = parseInt(document.getElementById('scoreInput').value);
+            let grade;
+            let message = '';
+            
+            if (score >= 90) {
+                grade = 'A';
+            } else if (score >= 80) {
+                if (score >= 85) {
+                    grade = 'B';
+                    message = 'Good job!';
+                } else {
+                    grade = 'B';
+                }
+            } else if (score >= 70) {
+                grade = 'C';
+            } else {
+                grade = 'F';
+            }
+            
+            let result = `Grade: ${grade}`;
+            if (message) {
+                result += `\n${message}`;
+            }
+            
+            document.getElementById('gradeOutput').textContent = result;
+        }
+
+        function runForLoop() {
+            const count = parseInt(document.getElementById('countInput').value);
+            let result = 'Counting from 1 to ' + count + ':\n';
+            
+            for (let i = 1; i <= count; i++) {
+                result += `Count: ${i}\n`;
+            }
+            
+            result += 'Loop finished!';
+            document.getElementById('forLoopOutput').textContent = result;
+            
+            // Visualization
+            const visualization = document.getElementById('forLoopVisualization');
+            visualization.innerHTML = '';
+            
+            for (let i = 1; i <= count; i++) {
+                const div = document.createElement('div');
+                div.className = 'loop-visualization';
+                div.textContent = `Iteration ${i}`;
+                visualization.appendChild(div);
+                
+                setTimeout(() => {
+                    div.classList.add('active');
+                    setTimeout(() => div.classList.remove('active'), 500);
+                }, i * 200);
+            }
+        }
+
+        function runWhileLoop() {
+            const limit = parseInt(document.getElementById('sumInput').value);
+            let result = `Calculating sum from 1 to ${limit}:\n`;
+            let i = 1;
+            let sum = 0;
+            
+            while (i <= limit) {
+                sum += i;
+                result += `Adding ${i}, sum = ${sum}\n`;
+                i++;
+            }
+            
+            result += `Final sum: ${sum}`;
+            document.getElementById('whileLoopOutput').textContent = result;
+        }
+
+        function runDoWhileLoop() {
+            const start = parseInt(document.getElementById('countdownInput').value);
+            let result = `Countdown from ${start}:\n`;
+            let number = start;
+            
+            do {
+                result += `Number: ${number}\n`;
+                number--;
+            } while (number > 0);
+            
+            result += 'Countdown finished!';
+            document.getElementById('doWhileOutput').textContent = result;
+        }
+
+        function runBreakExample() {
+            const breakAt = parseInt(document.getElementById('breakInput').value);
+            let result = '';
+            
+            for (let i = 1; i <= 10; i++) {
+                if (i === breakAt) {
+                    result += `Breaking at i = ${i}\n`;
+                    break;
+                }
+                result += `i = ${i}\n`;
+            }
+            
+            result += 'Loop ended';
+            document.getElementById('breakOutput').textContent = result;
+        }
+
+        function runContinueExample() {
+            const skipMultiple = parseInt(document.getElementById('continueInput').value);
+            let result = `Skipping multiples of ${skipMultiple}:\n`;
+            
+            for (let i = 1; i <= 10; i++) {
+                if (i % skipMultiple === 0) {
+                    continue;
+                }
+                result += `Number: ${i}\n`;
+            }
+            
+            document.getElementById('continueOutput').textContent = result;
+        }
+
+        function runSwitchExample() {
+            const day = parseInt(document.getElementById('daySelect').value);
+            let dayName;
+            
+            switch (day) {
+                case 1:
+                    dayName = 'Monday';
+                    break;
+                case 2:
+                    dayName = 'Tuesday';
+                    break;
+                case 3:
+                    dayName = 'Wednesday';
+                    break;
+                case 4:
+                    dayName = 'Thursday';
+                    break;
+                case 5:
+                    dayName = 'Friday';
+                    break;
+                case 6:
+                    dayName = 'Saturday';
+                    break;
+                case 7:
+                    dayName = 'Sunday';
+                    break;
+                default:
+                    dayName = 'Invalid day';
+            }
+            
+            document.getElementById('switchOutput').textContent = `Day: ${dayName}`;
+        }
+
+        function runEnhancedSwitch() {
+            const month = parseInt(document.getElementById('monthSelect').value);
+            let season;
+            
+            switch (month) {
+                case 12:
+                case 1:
+                case 2:
+                    season = 'Winter';
+                    break;
+                case 3:
+                case 4:
+                case 5:
+                    season = 'Spring';
+                    break;
+                case 6:
+                case 7:
+                case 8:
+                    season = 'Summer';
+                    break;
+                case 9:
+                case 10:
+                case 11:
+                    season = 'Fall';
+                    break;
+                default:
+                    season = 'Invalid month';
+            }
+            
+            document.getElementById('enhancedSwitchOutput').textContent = `Season: ${season}`;
+        }
+    </script>
+</body>
+</html>

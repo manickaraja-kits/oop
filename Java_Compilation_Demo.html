@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Java Program Execution Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .code-block {
+      background: #f0f0f0;
+      border-left: 5px solid #4CAF50;
+      padding: 10px;
+      white-space: pre-wrap;
+      font-family: Consolas, monospace;
+    }
+    .box-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .box {
+      border: 2px solid #333;
+      padding: 15px;
+      border-radius: 8px;
+      min-width: 200px;
+      background-color: #e3f2fd;
+    }
+    .highlight {
+      background-color: #c8e6c9 !important;
+      transition: background-color 0.5s;
+    }
+    .btn {
+      padding: 10px 15px;
+      margin-top: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:disabled {
+      background-color: #aaa;
+    }
+    .caption {
+      font-size: 0.9em;
+      color: #555;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Java Program Compilation and Execution Demo</h1>
+
+  <div class="section">
+    <h2>1. Java Source Code</h2>
+    <div class="code-block" id="sourceCode">
+public class HelloWorld {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 20;
+        int sum = a + b;
+        System.out.println(sum);
+    }
+}
+    </div>
+    <button class="btn" onclick="compileCode()">Compile (javac)</button>
+  </div>
+
+  <div class="section" id="bytecodeSection" style="display:none;">
+    <h2>2. Compiled Bytecode (.class file)</h2>
+    <div class="code-block">
+Compiled from "HelloWorld.java"
+public class HelloWorld {
+  public HelloWorld();
+    Code:
+       0: aload_0
+       1: invokespecial #1      // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: bipush        10      // Push 10
+       2: istore_1              // Store in a
+       3: bipush        20      // Push 20
+       5: istore_2              // Store in b
+       6: iload_1               // Load a
+       7: iload_2               // Load b
+       8: iadd                  // a + b
+       9: istore_3              // Store sum
+      10: getstatic     #2      // System.out
+      13: iload_3              // Load sum
+      14: invokevirtual #3     // println
+      17: return
+}
+    </div>
+    <button class="btn" onclick="runJVM()">Run on JVM</button>
+  </div>
+
+  <div class="section" id="jvmSection" style="display:none;">
+    <h2>3. JVM Execution and Memory Use</h2>
+    <div class="box-container">
+      <div class="box" id="methodArea">
+        <strong>Method Area</strong><br>
+        <div class="caption">
+          Stores class-level data like:<br>
+          - Class name: HelloWorld<br>
+          - Method: main()<br>
+          - Static fields and bytecode
+        </div>
+      </div>
+
+      <div class="box" id="heap">
+        <strong>Heap</strong><br>
+        <div class="caption">
+          Stores objects created using <code>new</code> keyword and arrays.<br>
+          In this case: <code>String[] args</code> is stored here.
+        </div>
+      </div>
+
+      <div class="box" id="stack">
+        <strong>Stack</strong><br>
+        <div class="caption">
+          Holds method frames and local variables like:<br>
+          - int a = 10<br>
+          - int b = 20<br>
+          - int sum = a + b
+        </div>
+      </div>
+    </div>
+    <button class="btn" onclick="simulateMemory()">Simulate Memory Allocation</button>
+  </div>
+
+  <div class="section" id="outputSection" style="display:none;">
+    <h2>4. Output</h2>
+    <div class="code-block" id="outputBox">
+      (Waiting to print...)
+    </div>
+  </div>
+
+  <script>
+    function compileCode() {
+      document.getElementById('bytecodeSection').style.display = 'block';
+    }
+
+    function runJVM() {
+      document.getElementById('jvmSection').style.display = 'block';
+    }
+
+    function simulateMemory() {
+      document.getElementById('methodArea').classList.add('highlight');
+      document.getElementById('heap').classList.add('highlight');
+      document.getElementById('stack').classList.add('highlight');
+      document.getElementById('outputSection').style.display = 'block';
+      document.getElementById('outputBox').innerText = "30";
+      setTimeout(() => {
+        document.getElementById('methodArea').classList.remove('highlight');
+        document.getElementById('heap').classList.remove('highlight');
+        document.getElementById('stack').classList.remove('highlight');
+      }, 1500);
+    }
+  </script>
+
+</body>
+</html>
